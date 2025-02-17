@@ -35,8 +35,10 @@ def generate_response(question,llm,temperature,max_tokens):
     answer=chain.invoke({'question':question})
     return answer
 
-
 st.title("WELL MATE")
+
+st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="centered")
+
 
 llm=ChatGroq(groq_api_key=groq_api_key,model_name="llama-3.3-70b-versatile")
 ## Adjust response parameter
