@@ -3,14 +3,6 @@ langchain
 ipykernel
 langchain-community
 langchain-groq
-
-
-
-
-
-
-
-
-
-
-
+pinecone
+langchain_pinecone
+langchain_huggingface
