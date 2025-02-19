@@ -1,6 +1,5 @@
 import streamlit as st
 from langchain_groq import ChatGroq
-from PIL import Image
 from langchain_core.prompts import ChatPromptTemplate , MessagesPlaceholder
 from langchain_pinecone import PineconeVectorStore
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -11,9 +10,6 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 # import sentence_transformers
 import os
-
-st.set_page_config(page_title="WELL MATE", page_icon="🩺", layout="centered")
-
 
 #fetching API from secret.toml file
  
@@ -52,6 +48,7 @@ docsearch = PineconeVectorStore.from_existing_index(
 )
 
 
+st.title("WELL MATE - Healthcare Chatbot")
 
 # Streamlit UI Setup
 session_id=st.sidebar.text_input("Session ID",value="default_session")
@@ -64,62 +61,10 @@ retriever = docsearch.as_retriever()
 # Initialize LLM
 llm=ChatGroq(groq_api_key=groq_api_key,model_name="llama-3.3-70b-versatile",temperature=temperature,max_tokens=max_tokens)
 
-# Load custom images
-# logo_image = Image.open("portrait-3d-female-doctor-photoaidcom-cropped.jpg")  # Path to your logo image
-# bot_avatar = Image.open("static/—Pngtree—beautiful lady doctor_14504911.png")  # Path to your custom bot image
-# user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")  # Path to your custom user image
-
-# Custom CSS for dark theme
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #1e1e1e;  /* Dark background */
-        color: #ffffff;  /* White text */
-    }
-
-    .stTextInput > div > div > input {
-        background-color: #2e2e2e;  /* Dark input field */
-        color: #ffffff;  /* White text */
-        border: 1px solid #444;  /* Dark border */
-    }
-
-    .stButton > button {
-        background-color: #4CAF50;  /* Green button */
-        color: white;
-        border-radius: 5px;
-        border: none;
-        padding: 10px 20px;
-    }
-
-    .stMarkdown h1 {
-        color: #4CAF50;  /* Green title */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Display logo and title
-col1, col2 = st.columns([1, 4])
-with col1:
-    st.image(logo_image, width=110)  # Adjust logo width as needed
-with col2:
-    st.markdown("<h1 style='text-align: left;'>WELL MATE - Healthcare Chatbot </h1>", unsafe_allow_html=True)
-
-st.markdown("<p style='text-align:center;'>Your health matters—let’s heal together!</p>", unsafe_allow_html=True )
-
-
 # Ensure session state is initialized
 if 'store' not in st.session_state:
     st.session_state["store"] = {}
 
-# Function to render custom styled messages
-def render_message(message, role):
-    if role == "user":
-        st.markdown(f'<div style="background-color: #FFFFFF; padding: 10px; border-radius: 10px; margin: 5px 0; color: black;">{message}</div>', unsafe_allow_html=True)
-    else:
-        st.markdown(f'<div style="background-color: #FFFFFF; padding: 10px; border-radius: 10px; margin: 5px 0; color: black;">{message}</div>', unsafe_allow_html=True)
 
 
 # System prompt for question contextualization
@@ -204,5 +149,3 @@ if user_input:
     # st.write(st.session_state.store)
     st.write("Assistant:", response['answer'])
     # st.write("Chat History:", session_history.messages)
-
-
