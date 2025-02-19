@@ -65,7 +65,7 @@ retriever = docsearch.as_retriever()
 llm=ChatGroq(groq_api_key=groq_api_key,model_name="llama-3.3-70b-versatile",temperature=temperature,max_tokens=max_tokens)
 
 # Load custom images
-logo_image = Image.open("portrait-3d-female-doctor-photoaidcom-cropped.jpg")  # Path to your logo image
+# logo_image = Image.open("portrait-3d-female-doctor-photoaidcom-cropped.jpg")  # Path to your logo image
 # bot_avatar = Image.open("static/—Pngtree—beautiful lady doctor_14504911.png")  # Path to your custom bot image
 # user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")  # Path to your custom user image
 
