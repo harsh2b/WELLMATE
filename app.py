@@ -17,7 +17,7 @@ st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="ce
 
 # Load images for frontend
 try:
-    logo_image = Image.open("static/portrait-3d-female-doctor-photoaidcom-cropped.jpg")
+    logo_image = Image.open("static/portrait-3d-female-doctor-photoa.png.jpg")
     bot_avatar = Image.open("static/—Pngtree—beautiful lady doctor_14504911.png")
     user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")
 except Exception as e:
