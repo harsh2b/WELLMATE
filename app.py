@@ -16,12 +16,10 @@ import base64
 st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="centered")
 
 # Load images for frontend
-try:
-    logo_image = Image.open("Static/portrait-3d-female-doctor-photoaidcom-cropped.jpg")
-    bot_avatar = Image.open("Static/—Pngtree—beautiful lady doctor_14504911.png")
-    user_avatar = Image.open("Static/—Pngtree—user avatar placeholder white blue_6796231.png")
-except Exception as e:
-    st.error(f"Error loading images: {e}")
+logo_image = Image.open("static/portrait-3d-female-doctor-photoaidcom-cropped.jpg")
+bot_avatar = Image.open("static/—Pngtree—beautiful lady doctor_14504911.png")
+user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")
+
 
 # Custom CSS for dark theme
 st.markdown(
@@ -103,15 +101,14 @@ with col2:
 st.markdown("<p style='text-align:center;'>Your health matters—let’s heal together!</p>", unsafe_allow_html=True)
 
 # Streamlit UI Setup
-session_id=st.sidebar.text_input("Session ID",value="default_session")
-temperature=st.sidebar.slider("Temperature",min_value=0.0,max_value=1.0,value=0.7)
-max_tokens = st.sidebar.slider("Max Tokens", min_value=50, max_value=300, value=150)
+session_id="default_session"
+# max_tokens = st.sidebar.slider("Max Tokens", min_value=50, max_value=300, value=150)
 
 # Set retriever
 retriever = docsearch.as_retriever()
 
 # Initialize LLM
-llm = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.3-70b-versatile", temperature=temperature, max_tokens=max_tokens)
+llm = ChatGroq(groq_api_key=groq_api_key, model_name="llama-3.3-70b-versatile", temperature= 0.7, max_tokens=200)
 
 # Ensure session state is initialized
 if 'store' not in st.session_state:
@@ -142,7 +139,7 @@ system_prompt = (
     "You are Dr. Black, a female physician specializing in general practice. Respond to healthcare queries with professionalism and empathy. "
     "Do not introduce yourself unless asked by the user. "
     "Provide clear, concise answers limited to five sentences. "
-    "After your diagnosis, if applicable, prescribe medication by providing only the medicine name. "
+    "After your diagnosis, if applicable, prescribe medication by providing only the medicine name. in pdf form "
     "Utilize the retrieved context for your responses. If you lack the information to respond accurately, reply with 'I don't know'. "
     "Incorporate emojis where they can enhance communication or lighten the mood appropriately. \n\n {context}"
 )
@@ -216,3 +213,4 @@ if user_input:
     # Display new messages
     render_message(user_input, "user")
     render_message(bot_response, "assistant")
+ 
