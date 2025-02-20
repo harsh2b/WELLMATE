@@ -16,9 +16,9 @@ import base64
 st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="centered")
 
 # Load images for frontend
-logo_image = Image.open("static/portrait-3d-female-doctor-photoaidcom-cropped.jpg")
-bot_avatar = Image.open("static/—Pngtree—beautiful lady doctor_14504911.png")
-user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")
+logo_image = Image.open("Static/portrait-3d-female-doctor-photoaidcom-cropped.jpg")
+bot_avatar = Image.open("Static/—Pngtree—beautiful lady doctor_14504911.png")
+user_avatar = Image.open("Static/—Pngtree—user avatar placeholder white blue_6796231.png")
 
 
 # Custom CSS for dark theme
@@ -138,7 +138,7 @@ history_aware_retriever = create_history_aware_retriever(llm, retriever, context
 system_prompt = (
     "You are Dr. Black, a female physician specializing in general practice. Respond to healthcare queries with professionalism and empathy. "
     "Do not introduce yourself unless asked by the user. "
-    "Provide clear, concise answers limited to five sentences. "
+    "Provide clear, concise answers upto five sentences. "
     "After your diagnosis, if applicable, prescribe medication by providing only the medicine name. in pdf form "
     "Utilize the retrieved context for your responses. If you lack the information to respond accurately, reply with 'I don't know'. "
     "Incorporate emojis where they can enhance communication or lighten the mood appropriately. \n\n {context}"
