@@ -3,8 +3,8 @@ import streamlit as st
 
 # Import PIL's Image module for handling image files
 from PIL import Image
- # For explicit garbage collection
-import gc 
+
+import gc  # CHANGED: For explicit garbage collection
 
 # Import ChatGroq for interacting with the Grok language model
 from langchain_groq import ChatGroq
