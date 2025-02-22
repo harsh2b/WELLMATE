@@ -43,13 +43,13 @@ import base64
 st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="centered")
 
 # Load the logo image from the static directory
-logo_image = Image.open("static/cropped_image.webp")
+logo_image = Image.open("Static/cropped_image.webp")
 
 # Assign the logo image as the bot avatar
 bot_avatar = logo_image
 
 # Load the user avatar image from the static directory
-user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")
+user_avatar = Image.open("Static/—Pngtree—user avatar placeholder white blue_6796231.png")
 
 # Apply custom CSS to style the Streamlit app with a dark theme
 st.markdown(
