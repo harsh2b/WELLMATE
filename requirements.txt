@@ -1,6 +1,5 @@
 streamlit
 langchain
-ipykernel
 langchain-community
 langchain-groq
 pinecone
