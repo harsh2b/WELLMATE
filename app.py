@@ -4,8 +4,6 @@ import streamlit as st
 # Import PIL's Image module for handling image files
 from PIL import Image
 
-import gc  # CHANGED: For explicit garbage collection
-
 # Import ChatGroq for interacting with the Grok language model
 from langchain_groq import ChatGroq
 
@@ -43,13 +41,13 @@ import base64
 st.set_page_config(page_title="Healthcare Chatbot", page_icon="🩺", layout="centered")
 
 # Load the logo image from the static directory
-logo_image = Image.open("Static/cropped_image.webp")
+logo_image = Image.open("static/cropped_image.webp")
 
 # Assign the logo image as the bot avatar
 bot_avatar = logo_image
 
 # Load the user avatar image from the static directory
-user_avatar = Image.open("Static/—Pngtree—user avatar placeholder white blue_6796231.png")
+user_avatar = Image.open("static/—Pngtree—user avatar placeholder white blue_6796231.png")
 
 # Apply custom CSS to style the Streamlit app with a dark theme
 st.markdown(
@@ -91,6 +89,7 @@ try:
     groq_api_key = st.secrets["GROQ_API_KEY"]  # Fetch Groq API key for LLM access
     pinecone_api_key = st.secrets["PINECONE_API_KEY"]  # Fetch Pinecone API key for vector store
     langchain_api_key = st.secrets["LANGSMITH-API-KEY"]  # REDUNDANT: Not used in the code
+    hugging_face_api_key = st.secrets["HF_API_KEY"]  # REDUNDANT: Not used; embeddings don't require it here
     langchain_tracing_v2 = st.secrets["LANGCHAIN_TRACING_V2"]  # REDUNDANT: Not used unless tracing is enabled
 except KeyError as e:
     st.error(f"Error: Missing API Key - {str(e)}")  # Display error if any key is missing
@@ -127,10 +126,12 @@ def load_vector_store():
     embeddings = load_embeddings()  # Use cached embeddings
     return PineconeVectorStore.from_existing_index(index_name="healtcare-chatbot", embedding=embeddings)  # Load vector store (typo: healtcare)
 
-# **CHANGE 1:** Hide the loading process by using a hidden container.
-with st.empty():  
-    embeddings = load_embeddings()  # Load embeddings (hidden from the user)
-    docsearch = load_vector_store()   # Load vector store (hidden from the user)
+# Load embeddings at startup
+embeddings = load_embeddings()  # Initialize embeddings for use
+
+# Load vector store at startup
+docsearch = load_vector_store()  # Initialize Pinecone vector store for retrieval
+
 # Create two columns for layout (1:4 ratio)
 col1, col2 = st.columns([1, 4])
 
@@ -173,18 +174,19 @@ if not st.session_state.patient_info_submitted:
 
     # Define function to render chat messages with avatars
 def render_message(message, role):
-    avatar_b64 = user_avatar_base64 if role == "user" else bot_avatar_base64  # Use precomputed string
+    avatar = user_avatar if role == "user" else bot_avatar  # Choose avatar based on role
     st.markdown(
         f'''
         <div class="chat-message">
-            <img src="data:image/png;base64,{avatar_b64}" width="30" height="30" />
+            <img src="data:image/png;base64,{avatar_to_base64(avatar)}" width="30" height="30" />
             <div style="background-color: #FFFFFF; padding: 10px; border-radius: 10px; margin: 5px 0; color: black;">
                 {message}
             </div>
         </div>
         ''',
-        unsafe_allow_html=True
+        unsafe_allow_html=True  # Render message with HTML/CSS
     )
+
 
 # Chatbot logic executes if patient info is submitted
 if st.session_state.patient_info_submitted:
@@ -299,8 +301,5 @@ if st.session_state.patient_info_submitted:
 
         # Render bot response
         render_message(bot_response, "assistant")
-
-        gc.collect()  # CHANGED: Explicitly force garbage collection to help limit memory usage
-
 
        
